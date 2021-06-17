@@ -5,13 +5,11 @@ class FloatWidget extends StatefulWidget {
   final Widget floatChild;
   final FloatWidgetPostion postion;
   FloatWidget(
-      {Key key,
+      {Key? key,
       this.postion = FloatWidgetPostion.bottomRight,
-      @required this.child,
-      @required this.floatChild})
-      : assert(child != null),
-        assert(floatChild != null),
-        super(key: key);
+      required this.child,
+      required this.floatChild})
+      : super(key: key);
 
   @override
   _FloatWidgetState createState() => _FloatWidgetState();
@@ -26,7 +24,7 @@ class _FloatWidgetState extends State<FloatWidget> {
   void initState() {
     Future.delayed(Duration(milliseconds: 0), () {
       _floatViewStateGlobalKey.currentState
-          .setMaxSize(_childKey.currentContext.size);
+          ?.setMaxSize(_childKey.currentContext?.size ?? Size.zero);
     });
     super.initState();
   }
@@ -49,9 +47,8 @@ class _FloatWidgetState extends State<FloatWidget> {
 class _FloatView extends StatefulWidget {
   final Widget child;
   final FloatWidgetPostion postion;
-  _FloatView({Key key, @required this.child, this.postion})
-      : assert(child != null),
-        super(key: key);
+  _FloatView({Key? key, required this.child, required this.postion})
+      : super(key: key);
 
   @override
   _FloatViewState createState() => _FloatViewState();
@@ -67,10 +64,11 @@ class _FloatViewState extends State<_FloatView> {
   double offsetY = 0;
 
   Size maxSize = Size(0, 0);
-  DragUpdateDetails updateDetails;
+  DragUpdateDetails? updateDetails;
 
   void setMaxSize(Size size) {
     maxSize = size;
+    Size currentSize = getCurrentSize();
 
     switch (widget.postion) {
       case FloatWidgetPostion.topLeft:
@@ -78,16 +76,16 @@ class _FloatViewState extends State<_FloatView> {
         top = 0;
         break;
       case FloatWidgetPostion.topRight:
-        left = maxSize.width - _containerKey.currentContext.size.width;
+        left = maxSize.width - currentSize.width;
         top = 0;
         break;
       case FloatWidgetPostion.bottomLeft:
         left = 0;
-        top = maxSize.height - _containerKey.currentContext.size.height;
+        top = maxSize.height - currentSize.height;
         break;
       case FloatWidgetPostion.bottomRight:
-        left = maxSize.width - _containerKey.currentContext.size.width;
-        top = maxSize.height - _containerKey.currentContext.size.height;
+        left = maxSize.width - currentSize.width;
+        top = maxSize.height - currentSize.height;
         break;
     }
     setState(() {});
@@ -99,6 +97,8 @@ class _FloatViewState extends State<_FloatView> {
   }
 
   void _updatePosition(DragUpdateDetails details) {
+    Size currentSize = getCurrentSize();
+
     duration = Duration(milliseconds: 0);
     updateDetails = details;
     left += details.delta.dx;
@@ -106,29 +106,34 @@ class _FloatViewState extends State<_FloatView> {
 
     if (left < 0) {
       left = 0;
-    } else if (left + _containerKey.currentContext.size.width > maxSize.width) {
-      left = maxSize.width - _containerKey.currentContext.size.width;
+    } else if (left + currentSize.width > maxSize.width) {
+      left = maxSize.width - currentSize.width;
     }
 
     if (top < 0) {
       top = 0;
-    } else if (top + _containerKey.currentContext.size.height >
-        maxSize.height) {
-      top = maxSize.height - _containerKey.currentContext.size.height;
+    } else if (top + currentSize.height > maxSize.height) {
+      top = maxSize.height - currentSize.height;
     }
 
     setState(() {});
   }
 
   void _onPanEnd() {
+    Size currentSize = getCurrentSize();
     duration = Duration(milliseconds: 100);
-    if (left + _containerKey.currentContext.size.width / 2 >=
-        maxSize.width / 2) {
-      left = maxSize.width - _containerKey.currentContext.size.width;
+    if (left + currentSize.width / 2 >= maxSize.width / 2) {
+      left = maxSize.width - currentSize.width;
     } else {
       left = 0;
     }
     setState(() {});
+  }
+
+  Size getCurrentSize() {
+    double width = _containerKey.currentContext?.size?.width ?? 0;
+    double height = _containerKey.currentContext?.size?.height ?? 0;
+    return Size(width, height);
   }
 
   @override

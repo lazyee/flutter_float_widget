@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
 }
 
 class FloatWidgetDemo extends StatefulWidget {
-  FloatWidgetDemo({Key key}) : super(key: key);
+  FloatWidgetDemo({Key? key}) : super(key: key);
 
   @override
   _FloatWidgetDemoState createState() => _FloatWidgetDemoState();
