@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class FloatWidget extends StatefulWidget {
   final Widget child;
   final Widget floatChild;
-  final FloatWidgetPostion postion;
+  final FloatWidgetPosition position;
   FloatWidget(
       {Key? key,
-      this.postion = FloatWidgetPostion.bottomRight,
+      this.position = FloatWidgetPosition.bottomRight,
       required this.child,
       required this.floatChild})
       : super(key: key);
@@ -35,7 +35,7 @@ class _FloatWidgetState extends State<FloatWidget> {
       children: [
         Container(key: _childKey, child: widget.child),
         _FloatView(
-          postion: widget.postion,
+          position: widget.position,
           key: _floatViewStateGlobalKey,
           child: widget.floatChild,
         )
@@ -46,8 +46,8 @@ class _FloatWidgetState extends State<FloatWidget> {
 
 class _FloatView extends StatefulWidget {
   final Widget child;
-  final FloatWidgetPostion postion;
-  _FloatView({Key? key, required this.child, required this.postion})
+  final FloatWidgetPosition position;
+  _FloatView({Key? key, required this.child, required this.position})
       : super(key: key);
 
   @override
@@ -70,20 +70,20 @@ class _FloatViewState extends State<_FloatView> {
     maxSize = size;
     Size currentSize = getCurrentSize();
 
-    switch (widget.postion) {
-      case FloatWidgetPostion.topLeft:
+    switch (widget.position) {
+      case FloatWidgetPosition.topLeft:
         left = 0;
         top = 0;
         break;
-      case FloatWidgetPostion.topRight:
+      case FloatWidgetPosition.topRight:
         left = maxSize.width - currentSize.width;
         top = 0;
         break;
-      case FloatWidgetPostion.bottomLeft:
+      case FloatWidgetPosition.bottomLeft:
         left = 0;
         top = maxSize.height - currentSize.height;
         break;
-      case FloatWidgetPostion.bottomRight:
+      case FloatWidgetPosition.bottomRight:
         left = maxSize.width - currentSize.width;
         top = maxSize.height - currentSize.height;
         break;
@@ -156,7 +156,7 @@ class _FloatViewState extends State<_FloatView> {
   }
 }
 
-enum FloatWidgetPostion {
+enum FloatWidgetPosition {
   topLeft,
   topRight,
   bottomLeft,

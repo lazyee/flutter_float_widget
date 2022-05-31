@@ -6,6 +6,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -58,7 +59,7 @@ class _FloatWidgetDemoState extends State<FloatWidgetDemo> {
             width: 250,
             height: 250,
             child: FloatWidget(
-                postion: FloatWidgetPostion.bottomRight,
+                position: FloatWidgetPosition.bottomRight,
                 child: Container(
                   color: Colors.green,
                 ),

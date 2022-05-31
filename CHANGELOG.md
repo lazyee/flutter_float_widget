@@ -9,3 +9,6 @@ fixed some bug
 ## [1.0.0] - 20210617
 
 Migrate to null safety.
+
+## [1.0.1] - 20220531
+fix some bug
